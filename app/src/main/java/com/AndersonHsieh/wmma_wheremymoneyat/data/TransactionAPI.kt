@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface TransactionAPI {
 
     @GET()
-    fun getTransactions():Call<List<Transaction>>;
+    fun getTransactions():List<Transaction>;
 }
