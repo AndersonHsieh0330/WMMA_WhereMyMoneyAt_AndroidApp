@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_about">About</string>
     <string name="title_add">Add</string>
+
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>
