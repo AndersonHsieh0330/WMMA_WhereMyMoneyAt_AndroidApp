@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface TransactionAPI {
 
-    @GET()
-    fun getTransactions():List<Transaction>;
+    @GET("?all=true&from=2021-11-08&to=2021-11-09")
+    fun getTransactions():Call<List<Transaction>>;
 }

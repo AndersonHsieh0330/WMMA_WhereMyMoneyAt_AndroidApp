@@ -50,8 +50,9 @@
             style="?android:attr/borderlessButtonStyle"
             android:textSize="20sp"
             android:gravity="center"
-            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
             android:drawableRight="@drawable/ic_action_dropdownarrow"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
