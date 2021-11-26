@@ -1,13 +1,18 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.data
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.MainActivity
 import retrofit2.Call
 
 //because parameter(transactionDAO) is needed to initialize TransactionRepository
 //we use the singleton pattern provided by Google's architecture components sample code instead of the "object" keyword
 class TransactionRepository private constructor(private val transactionDAO:TransactionDAO){
+
+    private lateinit var sp:SharedPreferences
 
     companion object{
 
@@ -20,5 +25,16 @@ class TransactionRepository private constructor(private val transactionDAO:Trans
         Log.d("andydebug", "API GET request sent ")
         return RetrofitInstance.apiAcessPoint.getTransactions();
     }
+
+    fun getSharedPreference (context:Context, sharedPreferenceTag:String) {
+        sp = context.getSharedPreferences(sharedPreferenceTag,Context.MODE_PRIVATE )
+    }
+
+    fun changeSelectedTimeInSharedPreference(year:Int, month:Int, date:Int, isAll:Boolean){
+
+    }
+
+
+
 
 }
