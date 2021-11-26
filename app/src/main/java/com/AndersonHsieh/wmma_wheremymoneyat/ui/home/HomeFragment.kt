@@ -1,10 +1,12 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,8 @@ import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentHomeBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.MainActivity
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 import com.AndersonHsieh.wmma_wheremymoneyat.util.RecyclerAdapter
 
@@ -26,6 +30,9 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+
+    interface onSelectedDate
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,20 +52,17 @@ class HomeFragment : Fragment() {
         //TransactionDAO is here for temperary use
         //TODO(Figure out where TransactionDAO should be initialized)
         val factory = MyViewModelFactory(TransactionRepository.getInstance(TransactionDAO()))
-        val viewModel: HomeViewModel by lazy {
-            //only initialized on first time use of the variable "viewModel"
-            ViewModelProvider(this, factory).get(HomeViewModel::class.java)
-        }
+        val viewModel :TransactionViewModel by activityViewModels()
 
         //update the actual data in view model
-        viewModel.getTransactions();
+
         //register observer of HomeViewModel, which belongs to HomeFragment
         viewModel.transactions.observe(viewLifecycleOwner, Observer {
             //here the response would be List<Transaction>
             binding.textDashboard.text = it.toString();
             dataSet = it;
 
-            //fortesting
+            //for testing
             initUI();
 
         })

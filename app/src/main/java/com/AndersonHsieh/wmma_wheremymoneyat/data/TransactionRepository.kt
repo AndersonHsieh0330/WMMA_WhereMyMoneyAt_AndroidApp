@@ -8,7 +8,9 @@ import retrofit2.Call
 //because parameter(transactionDAO) is needed to initialize TransactionRepository
 //we use the singleton pattern provided by Google's architecture components sample code instead of the "object" keyword
 class TransactionRepository private constructor(private val transactionDAO:TransactionDAO){
+
     companion object{
+
         @Volatile
         private var instance: TransactionRepository? = null
         fun getInstance(transactionDAO: TransactionDAO) = instance ?: TransactionRepository(transactionDAO)
@@ -20,4 +22,3 @@ class TransactionRepository private constructor(private val transactionDAO:Trans
     }
 
 }
-//javascript object notation

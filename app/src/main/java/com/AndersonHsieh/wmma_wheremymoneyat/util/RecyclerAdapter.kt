@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.TransactionRecyclerItemsBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
+import com.chauthai.swipereveallayout.SwipeRevealLayout
 
 class RecyclerAdapter(private val dataSet: List<Transaction>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
@@ -36,7 +37,24 @@ class RecyclerAdapter(private val dataSet: List<Transaction>): RecyclerView.Adap
         //bind the data set and the views in the viewholder
         //in this case, a single view binding variable takes care of all the views
 
-        holder.binding.testtest.text = "eeeeeee";
+        with(holder.binding) {
+            transactionRecyclerviewSwipeLayout.setSwipeListener(object:SwipeRevealLayout.SwipeListener{
+                override fun onClosed(view: SwipeRevealLayout?) {
+                    transactionRecyclerviewItemArrowImgview.rotation = 270f
+                }
+
+                override fun onOpened(view: SwipeRevealLayout?) {
+                    transactionRecyclerviewItemArrowImgview.rotation = 90f
+                }
+
+                override fun onSlide(view: SwipeRevealLayout?, slideOffset: Float) {
+                }
+
+            })
+            transactionRecyclerviewItemNameTextview.text = dataSet[position].name
+            transactionRecyclerviewItemAmountTextview.text = dataSet[position].amount.toString()
+            transactionRecyclerviewItemTimeTextview.text = dataSet[position].timeStamp
+        }
     }
 
     override fun getItemCount(): Int {

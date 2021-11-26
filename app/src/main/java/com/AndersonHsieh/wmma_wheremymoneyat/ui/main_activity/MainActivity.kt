@@ -1,14 +1,18 @@
-package com.AndersonHsieh.wmma_wheremymoneyat
+package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.AndersonHsieh.wmma_wheremymoneyat.R
+import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityMainBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
+import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
+import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         val navView: BottomNavigationView = binding.navView
 
@@ -31,5 +36,16 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+
+
+        val factory = MyViewModelFactory(TransactionRepository.getInstance(TransactionDAO()))
+
+        val viewModel: TransactionViewModel by lazy {
+            //only initialized on first time use of the variable "viewModel"
+            ViewModelProvider(this, factory).get(TransactionViewModel::class.java)
+        }
+
+        viewModel.getTransactions()
+
     }
 }
