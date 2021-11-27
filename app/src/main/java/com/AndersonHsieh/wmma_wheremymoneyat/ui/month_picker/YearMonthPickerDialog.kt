@@ -59,7 +59,6 @@ class YearMonthPickerDialog : DialogFragment() {
         selectAllCheckbox = binding.yearMonthPickerSelectAllCheckbox
         closeBTN = binding.yearMonthPickerClosebtn
 
-        //make sure
         viewModel.getSelectedYearMonth()
         viewModel.getIsSelectedAll()
         viewModel.selectedYearMonth.observe(this, androidx.lifecycle.Observer {
