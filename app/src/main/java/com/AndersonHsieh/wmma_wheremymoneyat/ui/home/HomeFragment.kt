@@ -19,10 +19,12 @@ import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.MainActivity
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 import com.AndersonHsieh.wmma_wheremymoneyat.util.RecyclerAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
     private lateinit var dataSet:List<Transaction>
@@ -49,23 +51,28 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        //TransactionDAO is here for temperary use
-        //TODO(Figure out where TransactionDAO should be initialized)
-        val factory = MyViewModelFactory(TransactionRepository.getInstance(TransactionDAO()))
         val viewModel :TransactionViewModel by activityViewModels()
 
         //update the actual data in view model
+        viewModel.getTransactions()
 
         //register observer of HomeViewModel, which belongs to HomeFragment
         viewModel.transactions.observe(viewLifecycleOwner, Observer {
-            //here the response would be List<Transaction>
-            binding.textDashboard.text = it.toString();
-            dataSet = it;
+
+            if(it!=null){
+            dataSet = it}else{
+                dataSet = listOf(Transaction(0,"failed",0.0,"2011"))
+            }
 
             //for testing
             initUI();
 
+
         })
+
+
+
+
 
 
     }

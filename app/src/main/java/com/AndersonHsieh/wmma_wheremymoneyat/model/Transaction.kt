@@ -11,9 +11,4 @@ data class Transaction(val id:Long,
                        @SerializedName("time")
                        var timeStamp:String) {
 
-    init {
-
-    }
-
-
 }

@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
+
         <Button
             android:id="@+id/transaction_recyclerview_item_edit"
             android:text="@string/edit"
@@ -21,7 +22,8 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:layout_marginStart="5dp"
-            android:background="?secondaryElementColor"
+            android:background="@drawable/recyclerview_item_roundbutton"
+            android:backgroundTint="?secondaryElementColor"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textAllCaps="false"
@@ -35,7 +37,8 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:layout_marginStart="5dp"
-            android:background="?mainElementColor"
+            android:backgroundTint="?mainElementColor"
+            android:background="@drawable/recyclerview_item_roundbutton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textAllCaps="false"

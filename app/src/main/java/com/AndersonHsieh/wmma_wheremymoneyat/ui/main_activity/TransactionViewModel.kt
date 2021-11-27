@@ -1,5 +1,7 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +19,11 @@ class TransactionViewModel(private val repository: TransactionRepository) : View
     //the observers will know
     val transactions: MutableLiveData<List<Transaction>> = MutableLiveData()
 
-    var test:String?=null
+    val selectedYearMonth: MutableLiveData<Array<Int>> = MutableLiveData()
+
+    val isSelectedAll: MutableLiveData<Boolean> = MutableLiveData()
+
+    var test: String? = null
 
     fun getTransactions() {
         repository.getTransaction().enqueue(object : Callback<List<Transaction>> {
@@ -33,6 +39,24 @@ class TransactionViewModel(private val repository: TransactionRepository) : View
             }
 
         })
+    }
+
+
+    fun getSelectedYearMonth() {
+        selectedYearMonth.value = repository.getYearMonthFromSharedPreference()
+    }
+
+    fun getIsSelectedAll() {
+        isSelectedAll.value = repository.getIsSelectedAllFromSharedPreference()
+    }
+
+    fun initSharedPreference(context: Context, sharedPreferenceTag: String) {
+        repository.initSharedPreference(context, sharedPreferenceTag)
+
+    }
+
+    fun changeSelectedTimeInSharedPreference(year: Int, month: Int, isAll: Boolean) {
+        repository.changeSelectedTimeInSharedPreference(year, month, isAll);
     }
 
 }

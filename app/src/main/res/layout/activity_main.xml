@@ -37,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/MainActivity_YearMonthPickerBTN"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:layout_constraintStart_toEndOf="@id/MainActivity_hamburgerMenuBTN"
