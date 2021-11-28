@@ -8,7 +8,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentAddBinding
+import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
+import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 
 class AddFragment : Fragment() {
 
@@ -24,17 +27,10 @@ class AddFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        addViewModel =
-            ViewModelProvider(this).get(AddViewModel::class.java)
-
+        addViewModel = ViewModelProvider(this, MyViewModelFactory(TransactionRepository.getInstance(TransactionDAO())))[AddViewModel::class.java]
         _binding = FragmentAddBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        addViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {

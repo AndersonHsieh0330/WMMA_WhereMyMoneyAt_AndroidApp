@@ -24,7 +24,7 @@
             android:layout_marginStart="5dp"
             android:background="@drawable/recyclerview_item_roundbutton"
             android:backgroundTint="?secondaryElementColor"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:textAllCaps="false"
             />
@@ -39,7 +39,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="?mainElementColor"
             android:background="@drawable/recyclerview_item_roundbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:textAllCaps="false"
             />

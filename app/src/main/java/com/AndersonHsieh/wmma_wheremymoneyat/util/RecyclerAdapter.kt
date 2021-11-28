@@ -1,5 +1,6 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.util
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.TransactionRecyclerItemsBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.edit_activity.EditActivity
 import com.chauthai.swipereveallayout.SwipeRevealLayout
 
 class RecyclerAdapter(private val dataSet: List<Transaction>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -54,6 +56,10 @@ class RecyclerAdapter(private val dataSet: List<Transaction>): RecyclerView.Adap
             transactionRecyclerviewItemNameTextview.text = dataSet[position].name
             transactionRecyclerviewItemAmountTextview.text = dataSet[position].amount.toString()
             transactionRecyclerviewItemTimeTextview.text = dataSet[position].timeStamp
+            transactionRecyclerviewItemEdit.setOnClickListener {
+                val intent = Intent(it.context, EditActivity::class.java)
+                it.context.startActivity(intent)
+            }
         }
     }
 

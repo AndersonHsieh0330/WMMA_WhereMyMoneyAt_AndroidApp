@@ -3,6 +3,7 @@ package com.AndersonHsieh.wmma_wheremymoneyat.util
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.add.AddViewModel
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
 
 class MyViewModelFactory(
@@ -20,7 +21,7 @@ class MyViewModelFactory(
         return with(modelClass) {
             when {
 //                isAssignableFrom(AboutViewModel::class.java) -> AboutViewModel(repository)
-//                isAssignableFrom(AddViewModel::class.java) -> AddViewModel(repository)
+                isAssignableFrom(AddViewModel::class.java) -> AddViewModel(repository)
                 isAssignableFrom(TransactionViewModel::class.java)-> sharedTransactionViewModel
 
                 else ->
