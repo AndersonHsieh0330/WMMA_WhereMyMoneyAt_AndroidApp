@@ -64,5 +64,15 @@ dependencies {
     // SwipeLayout for recycler items
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
+    //Room
+    def room_version = "2.3.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //SQLite
+    def sqlite_version = "2.1.0"
+
+    implementation "androidx.sqlite:sqlite-ktx:$sqlite_version"
 
 }

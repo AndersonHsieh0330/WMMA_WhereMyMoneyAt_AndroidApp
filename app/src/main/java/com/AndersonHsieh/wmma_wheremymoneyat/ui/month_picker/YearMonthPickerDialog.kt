@@ -10,16 +10,9 @@ import android.widget.CheckBox
 import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.findFragment
-import androidx.lifecycle.ViewModelProvider
-import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.YearMonthPickerBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
-import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.MainActivity
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
-import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
-import java.util.*
 
 class YearMonthPickerDialog : DialogFragment() {
 

@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Button
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -14,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityMainBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
+import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionDAO
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.month_picker.YearMonthPickerDialog
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
@@ -49,7 +48,9 @@ class MainActivity : AppCompatActivity() {
         //TODO("figure out where to instantizte the TransactionDAO)
         val viewModel: TransactionViewModel by lazy {
             //only initialized on first time use of the variable "viewModel"
-            ViewModelProvider(this, MyViewModelFactory(TransactionRepository.getInstance(TransactionDAO())))[TransactionViewModel::class.java]
+            ViewModelProvider(this, MyViewModelFactory(TransactionRepository.getInstance(
+                TransactionDAO()
+            )))[TransactionViewModel::class.java]
         }
 
         viewModel.initSharedPreference(applicationContext,Constants.SHAREDPREFERENCES_Transaction_TAG)

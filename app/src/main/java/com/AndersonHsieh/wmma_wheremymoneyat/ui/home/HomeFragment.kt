@@ -1,27 +1,17 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentHomeBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
-import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
-import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.MainActivity
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
-import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 import com.AndersonHsieh.wmma_wheremymoneyat.util.RecyclerAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeFragment : Fragment() {
 

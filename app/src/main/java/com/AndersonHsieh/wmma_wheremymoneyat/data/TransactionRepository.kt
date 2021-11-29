@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
-import com.AndersonHsieh.wmma_wheremymoneyat.model.TransactionDAO
-import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.MainActivity
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import retrofit2.Call
 import java.time.LocalDate
