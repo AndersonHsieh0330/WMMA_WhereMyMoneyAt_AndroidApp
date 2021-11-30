@@ -7,7 +7,7 @@
     tools:context=".ui.add.AddFragment">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        android:id="@+id/add_transaction_addBTN"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="25dp"
@@ -30,25 +30,26 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:clickable="false"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:id="@+id/add_transaction_price_title"
+        android:id="@+id/add_transaction_amount_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:text="@string/price_edittext_title"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@+id/add_transaction_price_edittext"
-        app:layout_constraintEnd_toStartOf="@+id/add_transaction_price_edittext"
-        app:layout_constraintStart_toStartOf="@+id/materialCardView"
-        app:layout_constraintTop_toTopOf="@+id/add_transaction_price_edittext" />
+        app:layout_constraintBottom_toBottomOf="@+id/add_transaction_amount_edittext"
+        app:layout_constraintEnd_toStartOf="@+id/add_transaction_amount_edittext"
+        app:layout_constraintStart_toStartOf="@+id/add_transaction_addBTN"
+        app:layout_constraintTop_toTopOf="@+id/add_transaction_amount_edittext" />
 
     <EditText
-        android:id="@+id/add_transaction_price_edittext"
+        android:id="@+id/add_transaction_amount_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
@@ -57,13 +58,13 @@
         android:paddingVertical="10dp"
         android:hint="@string/price_edittext_hintText"
         android:paddingHorizontal="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
-        app:layout_constraintEnd_toEndOf="@+id/materialCardView"
+        app:layout_constraintBottom_toTopOf="@+id/add_transaction_addBTN"
+        app:layout_constraintEnd_toEndOf="@+id/add_transaction_addBTN"
         app:layout_constraintTop_toBottomOf="@+id/add_transaction_name_edittext"
         android:background="@drawable/edittext_round_border"/>
 
     <TextView
-        android:id="@+id/add_transaction_name_textview"
+        android:id="@+id/add_transaction_name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -71,7 +72,7 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/add_transaction_name_edittext"
         app:layout_constraintEnd_toStartOf="@+id/add_transaction_name_edittext"
-        app:layout_constraintStart_toStartOf="@+id/materialCardView"
+        app:layout_constraintStart_toStartOf="@+id/add_transaction_addBTN"
         app:layout_constraintTop_toTopOf="@+id/add_transaction_name_edittext" />
 
     <EditText
@@ -83,9 +84,9 @@
         android:hint="@string/name_edittext_hintText"
         android:paddingVertical="10dp"
         android:paddingHorizontal="15dp"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/add_transaction_price_edittext"
-        app:layout_constraintEnd_toEndOf="@+id/materialCardView"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/add_transaction_amount_edittext"
+        app:layout_constraintEnd_toEndOf="@+id/add_transaction_addBTN"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/edittext_round_border"/>
 

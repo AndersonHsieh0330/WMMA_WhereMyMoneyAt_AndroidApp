@@ -12,6 +12,11 @@
     <string name="name_edittext_title">Name :</string>
     <string name="price_edittext_hintText">ex. 13.99</string>
     <string name="name_edittext_hintText">ex. Cheese Cake</string>
+    <string name="invalidInput">Invalid Input</string>
+    <string name="success">Success!</string>
+    <string name="failed">Failed to add make a request, please check your Internet connection</string>
+
+
 
 
 </resources>

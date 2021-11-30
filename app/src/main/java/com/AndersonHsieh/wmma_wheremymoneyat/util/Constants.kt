@@ -17,5 +17,14 @@ class Constants {
 
         //YearMonthPickerDialog related
         const val YEAR_MONTH_PICKER_LAUNCH_TAG = "year_month_picker_start"
+
+        //Transaction model related
+        const val TRANSACTION_ID = "transaction_id"
+        const val TRANSACTION_NAME = "transaction_name"
+        const val TRANSACTION_AMOUNT = "transaction_amount"
+        const val TRANSACTION_TIME = "transaction_time"
+
+
+
     }
 }

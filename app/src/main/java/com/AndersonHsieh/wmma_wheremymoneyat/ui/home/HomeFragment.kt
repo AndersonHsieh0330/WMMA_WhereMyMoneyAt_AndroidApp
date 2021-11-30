@@ -12,12 +12,13 @@ import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentHomeBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
 import com.AndersonHsieh.wmma_wheremymoneyat.util.RecyclerAdapter
+import java.time.LocalDateTime
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
-    private lateinit var dataSet:List<Transaction>
+    private lateinit var dataSet:MutableList<Transaction>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -50,26 +51,21 @@ class HomeFragment : Fragment() {
         viewModel.transactions.observe(viewLifecycleOwner, Observer {
 
             if(it!=null){
-            dataSet = it}else{
-                dataSet = listOf(Transaction(0,"failed",0.0,"2011"))
+               dataSet = it
+            }else{
+                dataSet = mutableListOf(Transaction(-1, "failed", 0.0, LocalDateTime.now().toString()))
             }
 
             //for testing
-            initUI();
+            initUI(viewModel);
 
 
         })
-
-
-
-
-
-
     }
 
-    private fun initUI(){
+    private fun initUI(viewModel: TransactionViewModel){
         val layoutManager = LinearLayoutManager(this.context)
-        val adapter = RecyclerAdapter(dataSet)
+        val adapter = RecyclerAdapter(dataSet,viewModel)
         val transactionRecyclerView = binding.homeTransactionRecyclerview
         transactionRecyclerView.adapter = adapter
         transactionRecyclerView.layoutManager = layoutManager

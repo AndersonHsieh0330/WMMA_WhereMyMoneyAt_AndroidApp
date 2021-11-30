@@ -5,25 +5,25 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Callback
 import java.time.LocalDate
 
 //because parameter(transactionDAO) is needed to initialize TransactionRepository
 //we use the singleton pattern provided by Google's architecture components sample code instead of the "object" keyword
-class TransactionRepository private constructor(private val transactionDAO: TransactionDAO) {
-
-    private lateinit var sp: SharedPreferences
+class TransactionRepository private constructor() {
 
     companion object {
-
         @Volatile
         private var instance: TransactionRepository? = null
-        fun getInstance(transactionDAO: TransactionDAO) =
-            instance ?: TransactionRepository(transactionDAO)
+        fun getInstance() = instance ?: TransactionRepository()
     }
 
-    fun getTransaction(): Call<List<Transaction>> {
-        Log.d("andydebug", "API GET request sent ")
+    fun getTransaction(context: Context): Call<List<Transaction>> {
+        val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
+        Log.d(Constants.LOGGING_TAG, "API GET request sent ")
+
         //retrieve selected year month directly from sharedpreference
         val arrayOfDates = convertToValidTimeIntervalString(
             year = sp.getInt(Constants.SP_YEAR, 2021),
@@ -37,13 +37,23 @@ class TransactionRepository private constructor(private val transactionDAO: Tran
         );
     }
 
-    fun initSharedPreference(context: Context, sharedPreferenceTag: String) {
-        //this method is executed in main activity(App starts)
-        //sharedpreference instance is kept and the context of main activity never gets destroyed
-        sp = context.getSharedPreferences(sharedPreferenceTag, Context.MODE_PRIVATE)
+    fun deleteTransaction(id:Long):Call<ResponseBody>{
+        Log.d(Constants.LOGGING_TAG, "API DELETE request sent ")
+        return RetrofitInstance.apiAcessPoint.deleteTransaction(id)
     }
 
-    fun getYearMonthFromSharedPreference(): Array<Int> {
+    fun putTransaction(name:String, amount:Double):Call<ResponseBody>{
+        Log.d(Constants.LOGGING_TAG, "API PUT request sent ")
+        return RetrofitInstance.apiAcessPoint.putTransactions(name, amount)
+    }
+
+    fun postTransaction(id:Long, name: String, amount: Double):Call<ResponseBody>{
+
+        return RetrofitInstance.apiAcessPoint.postTransactions(id,name,amount)
+    }
+
+    fun getYearMonthFromSharedPreference(context: Context): Array<Int> {
+        val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
         if (!sp.contains(Constants.SP_YEAR) || !sp.contains(Constants.SP_MONTH)) {
             //only gets here when user first downloads the app and doesn't have sharedpreference initialized
             val now = LocalDate.now()
@@ -64,11 +74,13 @@ class TransactionRepository private constructor(private val transactionDAO: Tran
 
     }
 
-        fun getIsSelectedAllFromSharedPreference(): Boolean {
+        fun getIsSelectedAllFromSharedPreference(context: Context): Boolean {
+            val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
             return sp.getBoolean(Constants.SP_SELECT_ALL, true)
         }
 
-        fun changeSelectedTimeInSharedPreference(year: Int, month: Int, isAll: Boolean) {
+        fun changeSelectedTimeInSharedPreference(year: Int, month: Int, isAll: Boolean, context: Context) {
+            val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
             with(sp.edit()) {
                 putInt(Constants.SP_YEAR, year)
                 putInt(Constants.SP_MONTH, month)
@@ -82,7 +94,7 @@ class TransactionRepository private constructor(private val transactionDAO: Tran
 
             val endDate = when (month) {
                 1 -> 31
-                2 -> if (year % 4 == 0) 29 else 28 //check leap year
+                2 -> if (year % 4 == 0) 29 else 28 //check for leap year
                 3 -> 31
                 4 -> 30
                 5 -> 31
@@ -97,6 +109,7 @@ class TransactionRepository private constructor(private val transactionDAO: Tran
             }
 
             //note that the "from" date goes first
-            return arrayOf("$year-$month-01", "$year-$month-$endDate")
+            Log.d(Constants.LOGGING_TAG, "$year-$month-31")
+            return arrayOf("$year-$month-01", "$year-$month-31")
         }
     }

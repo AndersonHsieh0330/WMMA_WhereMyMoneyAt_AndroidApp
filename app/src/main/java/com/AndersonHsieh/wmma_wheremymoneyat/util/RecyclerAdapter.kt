@@ -1,19 +1,28 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.util
 
+import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.TransactionRecyclerItemsBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.edit_activity.EditActivity
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
 import com.chauthai.swipereveallayout.SwipeRevealLayout
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class RecyclerAdapter(private val dataSet: List<Transaction>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val dataSet: MutableList<Transaction>, private val viewModel: TransactionViewModel): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding:TransactionRecyclerItemsBinding): RecyclerView.ViewHolder(binding.root) {
@@ -55,16 +64,47 @@ class RecyclerAdapter(private val dataSet: List<Transaction>): RecyclerView.Adap
             })
             transactionRecyclerviewItemNameTextview.text = dataSet[position].name
             transactionRecyclerviewItemAmountTextview.text = dataSet[position].amount.toString()
-            transactionRecyclerviewItemTimeTextview.text = dataSet[position].timeStamp
+            transactionRecyclerviewItemTimeTextview.text = dataSet[position].time
             transactionRecyclerviewItemEdit.setOnClickListener {
-                val intent = Intent(it.context, EditActivity::class.java)
-                it.context.startActivity(intent)
+                packTransactionInfoAndStartEditActivity(dataSet[position].id, dataSet[position].name, dataSet[position].amount, it.context)
+            }
+            transactionRecyclerviewItemDelete.setOnClickListener{
+                Log.d(Constants.LOGGING_TAG, "onResponse: clicked ${dataSet[holder.adapterPosition].id}")
+                viewModel.deleteTransactions(dataSet[holder.adapterPosition].id).enqueue(object:Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        //only remove the item with API DELETE request is successful
+
+                        dataSet.removeAt(holder.adapterPosition)
+                        notifyItemRemoved(holder.adapterPosition)
+                        Log.d(Constants.LOGGING_TAG, "onResponse: recycer ")
+
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Log.d(Constants.LOGGING_TAG, "Failure: recycer")
+
+                    }
+
+                })
             }
         }
     }
 
     override fun getItemCount(): Int {
         return dataSet.size
+    }
+
+    fun packTransactionInfoAndStartEditActivity(id:Long, name:String, amount:Double, context: Context){
+        val bundle = Bundle()
+        bundle.putLong(Constants.TRANSACTION_ID,id)
+        bundle.putString(Constants.TRANSACTION_NAME,name)
+        bundle.putDouble(Constants.TRANSACTION_AMOUNT,amount)
+        val intent = Intent(context, EditActivity::class.java)
+        intent.putExtras(bundle)
+        context.startActivity(intent)
     }
 
 }

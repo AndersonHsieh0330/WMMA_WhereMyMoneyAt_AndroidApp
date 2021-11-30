@@ -48,12 +48,9 @@ class MainActivity : AppCompatActivity() {
         //TODO("figure out where to instantizte the TransactionDAO)
         val viewModel: TransactionViewModel by lazy {
             //only initialized on first time use of the variable "viewModel"
-            ViewModelProvider(this, MyViewModelFactory(TransactionRepository.getInstance(
-                TransactionDAO()
-            )))[TransactionViewModel::class.java]
+            ViewModelProvider(this,
+                MyViewModelFactory(TransactionRepository.getInstance(),application))[TransactionViewModel::class.java]
         }
-
-        viewModel.initSharedPreference(applicationContext,Constants.SHAREDPREFERENCES_Transaction_TAG)
 
         viewModel.getTransactions()
         viewModel.getSelectedYearMonth()
