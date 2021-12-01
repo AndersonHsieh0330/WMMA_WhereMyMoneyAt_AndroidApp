@@ -1,10 +1,13 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,18 +17,21 @@ import androidx.navigation.ui.setupWithNavController
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityMainBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionDAO
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.month_picker.YearMonthPickerDialog
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     val viewModel: TransactionViewModel by lazy {
         //only initialized on first time use of the variable "viewModel"
-        ViewModelProvider(this,
-            MyViewModelFactory(TransactionRepository.getInstance(),application))[TransactionViewModel::class.java]
+        ViewModelProvider(
+            this,
+            MyViewModelFactory(TransactionRepository.getInstance(), application)
+        )[TransactionViewModel::class.java]
     }
 
     private lateinit var navView:BottomNavigationView
@@ -55,24 +61,26 @@ class MainActivity : AppCompatActivity() {
         viewModel.getIsSelectedAll()
 
         viewModel.isSelectedAll.observe(this, Observer {
-            if(it) {
+            if (it) {
                 binding.MainActivityYearMonthPickerBTN.text = "All"
-            }else{
+            } else {
                 //this block is only triggered when user unchecks the "select all" checkbox
                 //without modifying the year and month
                 val monthYear = viewModel.selectedYearMonth.value!!
-                val month:String = if (monthYear[1]>=10) (monthYear[1].toString()) else "0${monthYear[1]}"
+                val month: String =
+                    if (monthYear[1] >= 10) (monthYear[1].toString()) else "0${monthYear[1]}"
                 val yearMonthDisplayed = monthYear[0].toString() + "-" + month
                 binding.MainActivityYearMonthPickerBTN.text = yearMonthDisplayed
-            }})
+            }
+        })
 
-        viewModel.selectedYearMonth.observe(this, Observer{
-            if(!viewModel.isSelectedAll.value!!) {
+        viewModel.selectedYearMonth.observe(this, Observer {
+            if (!viewModel.isSelectedAll.value!!) {
                 //only set display button text
-                    val month:String = if (it[1]>=10) (it[1].toString()) else "0${it[1]}"
+                val month: String = if (it[1] >= 10) (it[1].toString()) else "0${it[1]}"
                 val yearMonthDisplayed = it[0].toString() + "-" + month
                 binding.MainActivityYearMonthPickerBTN.text = yearMonthDisplayed
-            }else{
+            } else {
                 binding.MainActivityYearMonthPickerBTN.text = "All"
             }
         })
@@ -85,8 +93,14 @@ class MainActivity : AppCompatActivity() {
         navView = binding.navView
         monthYearPickerBTN = binding.MainActivityYearMonthPickerBTN
         monthYearPickerBTN.setOnClickListener(View.OnClickListener {
-            val dialog = YearMonthPickerDialog()
+            if(viewModel.isConnectedToInternet()){
+                //TODO(waiting to debug)
+                val dialog = YearMonthPickerDialog()
             dialog.show(supportFragmentManager, Constants.YEAR_MONTH_PICKER_LAUNCH_TAG)
+            }else{
+                //user is only allowed to view the collection of transactions cached in SQLite when offline
+                Toast.makeText(applicationContext, R.string.offline, Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -96,4 +110,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.getTransactions()
         Log.d(Constants.LOGGING_TAG, "activity onrestart ")
     }
+
+
+
+
+
 }

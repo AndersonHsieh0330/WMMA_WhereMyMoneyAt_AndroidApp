@@ -1,7 +1,9 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.data
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.util.Log
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
@@ -112,4 +114,18 @@ class TransactionRepository private constructor() {
             Log.d(Constants.LOGGING_TAG, "$year-$month-31")
             return arrayOf("$year-$month-01", "$year-$month-31")
         }
+
+    fun isConnectedToInternet(context:Context):Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            return true
+        }
+        return false
     }
+
+
+
+}

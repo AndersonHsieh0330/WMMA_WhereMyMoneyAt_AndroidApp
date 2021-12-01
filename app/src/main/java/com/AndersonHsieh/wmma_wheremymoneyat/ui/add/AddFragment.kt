@@ -65,37 +65,45 @@ class AddFragment : Fragment() {
 
     }
 
-    private fun checkInputAndSendRequest(){
-        try {
-            val currentNameInput = nameInput.text.toString()
-            val currentAmountInput = amountInput.text.toString()
-            if (currentNameInput != "" && currentAmountInput != "") {
-                viewModel.putTransactions(currentNameInput, currentAmountInput.toDouble()).enqueue(object :
-                    Callback<ResponseBody> {
-                    override fun onResponse(
-                        call: Call<ResponseBody>,
-                        response: Response<ResponseBody>
-                    ) {
-                        nameInput.text.clear()
-                        amountInput.text.clear()
-                        Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show()
-                    }
+    private fun checkInputAndSendRequest() {
+        if (viewModel.isConnectedToInternet(activity?.applicationContext!!)) {
+            try {
+                val currentNameInput = nameInput.text.toString()
+                val currentAmountInput = amountInput.text.toString()
+                if (currentNameInput != "" && currentAmountInput != "") {
+                    viewModel.putTransactions(currentNameInput, currentAmountInput.toDouble())
+                        .enqueue(object :
+                            Callback<ResponseBody> {
+                            override fun onResponse(
+                                call: Call<ResponseBody>,
+                                response: Response<ResponseBody>
+                            ) {
+                                nameInput.text.clear()
+                                amountInput.text.clear()
+                                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show()
+                            }
 
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, R.string.failed, Toast.LENGTH_SHORT).show()
-                    }
+                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                Toast.makeText(context, R.string.failed, Toast.LENGTH_SHORT).show()
+                            }
 
-                })
+                        })
 
-            } else {
+                } else {
+                    Toast.makeText(this.context, R.string.invalidInput, Toast.LENGTH_SHORT).show()
+                }
+            } catch (exception: NumberFormatException) {
+                Log.d(
+                    Constants.LOGGING_TAG,
+                    "putTransaction: ${resources.getString(R.string.invalidInput)}"
+                )
                 Toast.makeText(this.context, R.string.invalidInput, Toast.LENGTH_SHORT).show()
             }
-        } catch (exception: NumberFormatException) {
-            Log.d(
-                Constants.LOGGING_TAG,
-                "putTransaction: ${resources.getString(R.string.invalidInput)}"
-            )
-            Toast.makeText(this.context, R.string.invalidInput, Toast.LENGTH_SHORT).show()
+        } else {
+            //user is only allowed to view the collection of transactions cached in SQLite when offline
+            //not allowed to add a new transaction
+            Toast.makeText(activity?.applicationContext, R.string.offline, Toast.LENGTH_SHORT)
+                .show()
         }
 
     }

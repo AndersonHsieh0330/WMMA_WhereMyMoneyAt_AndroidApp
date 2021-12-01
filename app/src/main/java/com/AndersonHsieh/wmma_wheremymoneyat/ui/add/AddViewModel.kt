@@ -1,5 +1,6 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.add
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,10 @@ class AddViewModel(private val repository: TransactionRepository) : ViewModel() 
 
     fun putTransactions(name:String, amount:Double): Call<ResponseBody> {
         return repository.putTransaction(name, amount)
+    }
+
+    fun isConnectedToInternet(context:Context):Boolean{
+        return repository.isConnectedToInternet(context)
     }
 
 }

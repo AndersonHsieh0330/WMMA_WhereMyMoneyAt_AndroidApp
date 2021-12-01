@@ -1,6 +1,8 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
@@ -64,7 +66,10 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
 
     fun changeSelectedTimeInSharedPreference(year: Int, month: Int, isAll: Boolean) {
         repository.changeSelectedTimeInSharedPreference(year, month, isAll, getApplication());
+    }
 
+    fun isConnectedToInternet():Boolean {
+        return repository.isConnectedToInternet(getApplication())
     }
 
 }

@@ -24,7 +24,5 @@ class Constants {
         const val TRANSACTION_AMOUNT = "transaction_amount"
         const val TRANSACTION_TIME = "transaction_time"
 
-
-
     }
 }
