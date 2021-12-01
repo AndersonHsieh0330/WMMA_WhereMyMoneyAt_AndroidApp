@@ -36,6 +36,7 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
                 for(item in response.body()!!){
                     mutableList.add(item)
                 }
+                mutableList.reverse();
                 transactions.value = mutableList
             }
 

@@ -1,6 +1,7 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentHomeBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity.TransactionViewModel
+import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.RecyclerAdapter
 import java.time.LocalDateTime
 
@@ -74,4 +76,6 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

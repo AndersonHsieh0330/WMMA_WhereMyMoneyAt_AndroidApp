@@ -1,6 +1,7 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,6 +22,11 @@ import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    val viewModel: TransactionViewModel by lazy {
+        //only initialized on first time use of the variable "viewModel"
+        ViewModelProvider(this,
+            MyViewModelFactory(TransactionRepository.getInstance(),application))[TransactionViewModel::class.java]
+    }
 
     private lateinit var navView:BottomNavigationView
     private lateinit var monthYearPickerBTN:Button
@@ -43,14 +49,6 @@ class MainActivity : AppCompatActivity() {
         )
         navView.setupWithNavController(navController)
 
-
-
-        //TODO("figure out where to instantizte the TransactionDAO)
-        val viewModel: TransactionViewModel by lazy {
-            //only initialized on first time use of the variable "viewModel"
-            ViewModelProvider(this,
-                MyViewModelFactory(TransactionRepository.getInstance(),application))[TransactionViewModel::class.java]
-        }
 
         viewModel.getTransactions()
         viewModel.getSelectedYearMonth()
@@ -90,5 +88,12 @@ class MainActivity : AppCompatActivity() {
             val dialog = YearMonthPickerDialog()
             dialog.show(supportFragmentManager, Constants.YEAR_MONTH_PICKER_LAUNCH_TAG)
         })
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        //once editActivity is closed, update the data by making a GET request
+        viewModel.getTransactions()
+        Log.d(Constants.LOGGING_TAG, "activity onrestart ")
     }
 }

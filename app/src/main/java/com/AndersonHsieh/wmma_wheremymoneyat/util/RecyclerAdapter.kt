@@ -32,7 +32,6 @@ class RecyclerAdapter(private val dataSet: MutableList<Transaction>, private val
 
         //since we don't have that many views inside of each recyclerview item
         //storing a single view binding object can void lots of unnecessary code
-
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
         // Create a new viewfinder, which defines the UI of the list item
@@ -67,6 +66,10 @@ class RecyclerAdapter(private val dataSet: MutableList<Transaction>, private val
             transactionRecyclerviewItemTimeTextview.text = dataSet[position].time
             transactionRecyclerviewItemEdit.setOnClickListener {
                 packTransactionInfoAndStartEditActivity(dataSet[position].id, dataSet[position].name, dataSet[position].amount, it.context)
+
+                //starting a new activity while closing swipelayout create possible screen glitch
+                //thus we sacrifice the animation for better visual experience
+                transactionRecyclerviewSwipeLayout.close(false)
             }
             transactionRecyclerviewItemDelete.setOnClickListener{
                 Log.d(Constants.LOGGING_TAG, "onResponse: clicked ${dataSet[holder.adapterPosition].id}")
@@ -89,6 +92,7 @@ class RecyclerAdapter(private val dataSet: MutableList<Transaction>, private val
                     }
 
                 })
+                transactionRecyclerviewSwipeLayout.close(true)
             }
         }
     }

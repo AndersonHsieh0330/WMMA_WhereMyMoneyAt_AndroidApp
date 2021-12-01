@@ -7,12 +7,11 @@ import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 @Dao
 interface TransactionDAO {
     //caching strategy as below
-    //each request to the TransactionAPI is stored into SQlite
-    //A unit of request is by a collection of transactions such as All, 2021-01, 2021-02....2030-12
-    //once a list of transaction is fetched, all of the transactions are stored and the unit is marked as "Sync"
-    //once a modification is made to the unit of transactions, mark the unit as "Not-Sync"
-    //if user request a unit that is "Sync", just SELECT from SQLite instead of fetching from TransactionAPI
-    //if user request a unit that is "Not-Sync", fetch from TransactionAPI and stored the unit in SQlite
+    //A UNIT of request is organized by a collection of transactions such as All, 2021-01, 2021-02....2030-12
+    //once a GET request is made, all the transactions from TransactionAPI is stored into SQLite
+    //once a list of transaction is fetched, all following edits to remote db is replicated for local db(PUT, POST, DELETE)
+    //once user goes offline, user can see the latest updated data from SQLite
+    //but is not allowed to make a new GET request from the API
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     //means that if there are duplicated transactions ready to be inserted
@@ -31,6 +30,9 @@ interface TransactionDAO {
 
     @Delete
     fun deleteTransaction(transaction: Transaction)
+
+    @Query(value = "DELETE FROM transactions")
+    fun clearDB()
 
 
 }
