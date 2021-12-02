@@ -22,11 +22,11 @@ interface TransactionDAO {
     //this is a special unit
     //if this unit is "Sync", all other units will be fetched from SQLite instead of TransactionAPI
     @Query(value = "SELECT * FROM transactions ORDER BY time")
-    fun readAllTransactions():LiveData<List<Transaction>>
+    fun readAllTransactions():MutableList<Transaction>
 
 
     @Query(value = "SELECT * FROM transactions Where time = :year-:month ORDER BY time ")
-    fun readTransactionsByYearMonth(year:String, month:String):LiveData<List<Transaction>>
+    fun readTransactionsByYearMonth(year:String, month:String):MutableList<Transaction>
 
     @Delete
     fun deleteTransaction(transaction: Transaction)

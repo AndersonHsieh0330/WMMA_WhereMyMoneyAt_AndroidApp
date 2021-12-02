@@ -25,7 +25,6 @@ abstract class TransactionDataBase():RoomDatabase() {
             }
             synchronized(this) {
                 //everything in this block will be protected from concurrent execute by multiple threads
-
                 return Room.databaseBuilder(
                     context.applicationContext,
                     TransactionDataBase::class.java,

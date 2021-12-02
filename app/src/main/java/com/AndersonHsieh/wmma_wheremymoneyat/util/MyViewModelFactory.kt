@@ -31,8 +31,6 @@ class MyViewModelFactory(
                     repository,
                     app
                 )
-
-
                 else ->
                     throw IllegalArgumentException(
                         "Unknown ViewModel class: ${modelClass.name}"

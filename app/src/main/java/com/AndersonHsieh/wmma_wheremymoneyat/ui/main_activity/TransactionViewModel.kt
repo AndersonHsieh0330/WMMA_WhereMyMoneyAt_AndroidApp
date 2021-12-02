@@ -27,27 +27,7 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
     val isSelectedAll: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getTransactions() {
-        repository.getTransaction(getApplication()).enqueue(object : Callback<List<Transaction>> {
-            override fun onResponse(
-                call: retrofit2.Call<List<Transaction>>,
-                response: Response<List<Transaction>>
-            ) {
-                //convert the List<transaction> returned from API to MutableList<Transactions>
-                //to allow removing items in recyclerview
-                val mutableList = mutableListOf<Transaction>()
-                for(item in response.body()!!){
-                    mutableList.add(item)
-                }
-                mutableList.reverse();
-                transactions.value = mutableList
-            }
-
-            override fun onFailure(call: Call<List<Transaction>>, t: Throwable) {
-                transactions.value = mutableListOf(Transaction(-1, "failed", 0.0, LocalDateTime.now().toString()))
-
-            }
-
-        })
+        transactions.value = repository.getTransaction(getApplication())
     }
 
     fun deleteTransactions(id:Long):Call<ResponseBody>{
