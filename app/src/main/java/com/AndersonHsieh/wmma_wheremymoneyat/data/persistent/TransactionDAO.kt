@@ -1,4 +1,4 @@
-package com.AndersonHsieh.wmma_wheremymoneyat.data
+package com.AndersonHsieh.wmma_wheremymoneyat.data.persistent
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -19,19 +19,16 @@ interface TransactionDAO {
     fun addTransaction(transaction: Transaction)
 
 
-    //this is a special unit
-    //if this unit is "Sync", all other units will be fetched from SQLite instead of TransactionAPI
-    @Query(value = "SELECT * FROM transactions ORDER BY time")
-    fun readAllTransactions():MutableList<Transaction>
+    @Query(value = "SELECT * FROM transactions ORDER BY time;")
+    fun readAllTransactions():List<Transaction>
 
-
-    @Query(value = "SELECT * FROM transactions Where time = :year-:month ORDER BY time ")
-    fun readTransactionsByYearMonth(year:String, month:String):MutableList<Transaction>
+    @Query(value = "SELECT * FROM transactions WHERE time = :year-:month ORDER BY time;")
+    fun readTransactionsByYearMonth(year:String, month:String):List<Transaction>
 
     @Delete
     fun deleteTransaction(transaction: Transaction)
 
-    @Query(value = "DELETE FROM transactions")
+    @Query(value = "DELETE FROM transactions;")
     fun clearDB()
 
 

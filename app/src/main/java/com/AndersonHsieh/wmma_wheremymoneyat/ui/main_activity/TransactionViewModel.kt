@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
@@ -20,14 +21,52 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
     //Custom ViewModel factory is created in order to pass arguments into view model
     //use AndroidViewModel class because application context is needed for using SharedPreference in repository
 
-    val transactions: MutableLiveData<MutableList<Transaction>> = MutableLiveData()
+    //return a LiveData for read-only access from the views
+    var transactions: MutableLiveData<List<Transaction>> = MutableLiveData()
 
     val selectedYearMonth: MutableLiveData<Array<Int>> = MutableLiveData()
 
     val isSelectedAll: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getTransactions() {
-        transactions.value = repository.getTransaction(getApplication())
+        //this function is an exception from other data related functions done in repository layer
+        if(repository.isConnectedToInternet(getApplication())){
+            //implement network connection check here in viewmodel
+                // due to the limitation of different data types returned by web api(Call) and SQLite
+            getTransactionsFromWebAPI()
+        }else{
+        getCachedTransactions()
+        }
+    }
+
+    fun getCachedTransactions(){
+        transactions.value = repository.getCachedTransaction(getApplication())
+
+    }
+
+    fun getTransactionsFromWebAPI(){
+        repository.getTransaction(getApplication()).enqueue(object : Callback<List<Transaction>> {
+            override fun onResponse(
+                call: retrofit2.Call<List<Transaction>>,
+                response: Response<List<Transaction>>
+            ) {
+                //convert the List<transaction> returned from API to MutableList<Transactions>
+                //to allow removing items in recyclerview
+                val mutableList = mutableListOf<Transaction>()
+                for(item in response.body()!!){
+                    mutableList.add(item)
+                }
+                transactions.value = mutableList
+                repository.cacheTransactions(getApplication(), response.body()!!)
+            }
+
+            override fun onFailure(call: Call<List<Transaction>>, t: Throwable) {
+                //if somehow network request fails, due to reason other than network connectivity
+                //we load the local data
+                transactions.value = repository.getCachedTransaction(getApplication())
+            }
+
+        })
     }
 
     fun deleteTransactions(id:Long):Call<ResponseBody>{

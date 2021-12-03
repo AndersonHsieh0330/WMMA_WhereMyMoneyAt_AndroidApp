@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentAddBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionDAO
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 import com.google.android.material.card.MaterialCardView

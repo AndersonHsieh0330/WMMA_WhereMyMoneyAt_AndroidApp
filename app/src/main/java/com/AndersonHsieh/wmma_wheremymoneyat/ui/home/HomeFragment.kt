@@ -48,11 +48,15 @@ class HomeFragment : Fragment() {
 
         //register observer of HomeViewModel, which belongs to HomeFragment
         viewModel.transactions.observe(viewLifecycleOwner, Observer {
-
-            if(it!=null){
-               dataSet = it
+            val mutableDataSet = mutableListOf<Transaction>()
+            dataSet = if(it!=null){
+                for(item in it){
+                    mutableDataSet.add(item)
+                }
+                mutableDataSet.reverse()
+                mutableDataSet
             }else{
-                dataSet = mutableListOf(Transaction(-1, "failed", 0.0, LocalDateTime.now().toString()))
+                mutableListOf(Transaction(-1, "failed", 0.0, LocalDateTime.now().toString()))
             }
 
             //for testing

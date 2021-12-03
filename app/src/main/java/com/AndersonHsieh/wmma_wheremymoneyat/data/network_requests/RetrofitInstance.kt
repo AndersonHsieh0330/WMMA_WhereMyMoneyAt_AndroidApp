@@ -1,9 +1,8 @@
-package com.AndersonHsieh.wmma_wheremymoneyat.data
+package com.AndersonHsieh.wmma_wheremymoneyat.data.network_requests
 
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object RetrofitInstance {
 

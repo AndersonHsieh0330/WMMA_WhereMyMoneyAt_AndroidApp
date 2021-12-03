@@ -1,20 +1,16 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.data
 
-import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.room.Room
+import com.AndersonHsieh.wmma_wheremymoneyat.data.network_requests.RetrofitInstance
+import com.AndersonHsieh.wmma_wheremymoneyat.data.persistent.TransactionDataBase
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 //because parameter(transactionDAO) is needed to initialize TransactionRepository
 //we use the singleton pattern provided by Google's architecture components sample code instead of the "object" keyword
@@ -37,12 +33,9 @@ class TransactionRepository private constructor() {
         }
     }
 
-    fun getTransaction(context: Context): MutableList<Transaction> {
-        var result = mutableListOf<Transaction>()
-        val sp = context.getSharedPreferences(
-            Constants.SHAREDPREFERENCES_Transaction_TAG,
-            Context.MODE_PRIVATE
-        )
+    fun getTransaction(context: Context): Call<List<Transaction>> {
+        val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
+        Log.d(Constants.LOGGING_TAG, "API GET request sent ")
 
         //retrieve selected year month directly from sharedpreference
         val arrayOfDates = convertToValidTimeIntervalString(
@@ -50,55 +43,12 @@ class TransactionRepository private constructor() {
             month = sp.getInt(Constants.SP_MONTH, 1)
         )
 
-        if (isConnectedToInternet(context)) {
-            Log.d(Constants.LOGGING_TAG, "API GET request sent ")
-
-            RetrofitInstance.apiAcessPoint.getTransactions(
-                sp.getBoolean(
-                    Constants.SP_SELECT_ALL,
-                    true
-                ), arrayOfDates[0], arrayOfDates[1]
-            ).enqueue(object : Callback<List<Transaction>> {
-                override fun onResponse(
-                    call: retrofit2.Call<List<Transaction>>,
-                    response: Response<List<Transaction>>
-                ) {
-                    //convert the List<transaction> returned from API to MutableList<Transactions>
-                    //to allow removing items in recyclerview
-                    val mutableList = mutableListOf<Transaction>()
-                    for (item in response.body()!!) {
-                        mutableList.add(item)
-                    }
-                    mutableList.reverse()
-                    //TODO(add this mutablelist ot cash)
-                    result = mutableList
-                }
-
-                override fun onFailure(call: Call<List<Transaction>>, t: Throwable) {
-                    result = mutableListOf(
-                        Transaction(
-                            -1,
-                            "failed",
-                            0.0,
-                            LocalDateTime.now().toString()
-                        )
-                    )
-
-                }
-
-            })
-
-            return result
-        } else {
-            //TODO(package this to a neew function getCachedTransactions())
-            result = if (sp.getBoolean(Constants.SP_SELECT_ALL, false)) {
-                TransactionDataBase.getInstance(context).transactionDAO().readAllTransactions()
-            } else {
-                TransactionDataBase.getInstance(context).transactionDAO()
-                    .readTransactionsByYearMonth(arrayOfDates[0], arrayOfDates[1])
-            }
-            return result
-        }
+         return RetrofitInstance.apiAcessPoint.getTransactions(
+            sp.getBoolean(
+                Constants.SP_SELECT_ALL,
+                true
+            ), arrayOfDates[0], arrayOfDates[1]
+        )
     }
 
     fun deleteTransaction(id: Long): Call<ResponseBody> {
@@ -115,6 +65,24 @@ class TransactionRepository private constructor() {
 
         return RetrofitInstance.apiAcessPoint.postTransactions(id, name, amount)
     }
+
+    fun getCachedTransaction(context: Context):List<Transaction>{
+        val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
+
+        return if (sp.getBoolean(Constants.SP_SELECT_ALL, false)) {
+            TransactionDataBase.getInstance(context).transactionDAO().readAllTransactions()
+        } else {
+            TransactionDataBase.getInstance(context).transactionDAO()
+                .readTransactionsByYearMonth(sp.getInt(Constants.SP_YEAR, 2021).toString(),
+                    sp.getInt(Constants.SP_MONTH, 1).toString())
+        }
+    }
+
+    fun cacheTransactions(context: Context, mutableList: List<Transaction>){
+        val sqliteDB = TransactionDataBase.getInstance(context).transactionDAO()
+        mutableList.forEach{sqliteDB.addTransaction(it)}
+    }
+
 
     fun getYearMonthFromSharedPreference(context: Context): Array<Int> {
         val sp = context.getSharedPreferences(
@@ -192,6 +160,7 @@ class TransactionRepository private constructor() {
     }
 
     fun isConnectedToInternet(context: Context): Boolean {
+        //define this method in repository for reusability
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
