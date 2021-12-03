@@ -35,13 +35,17 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
                 // due to the limitation of different data types returned by web api(Call) and SQLite
             getTransactionsFromWebAPI()
         }else{
-        getCachedTransactions()
+            getCachedTransactions()
         }
     }
 
     fun getCachedTransactions(){
         transactions.value = repository.getCachedTransaction(getApplication())
 
+    }
+
+    fun cacheTransactions(context: Context, data: List<Transaction>){
+        repository.cacheTransactions(context, data)
     }
 
     fun getTransactionsFromWebAPI(){
@@ -57,7 +61,7 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
                     mutableList.add(item)
                 }
                 transactions.value = mutableList
-                repository.cacheTransactions(getApplication(), response.body()!!)
+                cacheTransactions(getApplication(), response.body()!!)
             }
 
             override fun onFailure(call: Call<List<Transaction>>, t: Throwable) {
@@ -70,7 +74,7 @@ class TransactionViewModel(private val repository: TransactionRepository, applic
     }
 
     fun deleteTransactions(id:Long):Call<ResponseBody>{
-        return repository.deleteTransaction(id)
+        return repository.deleteTransaction(getApplication(), id)
     }
 
 

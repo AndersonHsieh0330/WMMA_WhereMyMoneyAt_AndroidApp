@@ -1,17 +1,14 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.edit_activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityEditBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.ui.add.AddViewModel
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
 import com.google.android.material.card.MaterialCardView
@@ -44,7 +41,7 @@ class EditActivity : AppCompatActivity() {
             name = bundle.getString(Constants.TRANSACTION_NAME).toString()
             amount = bundle.getDouble(Constants.TRANSACTION_AMOUNT)
         }
-        viewModel = ViewModelProvider(this, MyViewModelFactory(TransactionRepository.getInstance()))[EditViewModel::class.java]
+        viewModel = ViewModelProvider(this, MyViewModelFactory(TransactionRepository.getInstance(), this.application))[EditViewModel::class.java]
 
         initUI(id, name, amount)
     }

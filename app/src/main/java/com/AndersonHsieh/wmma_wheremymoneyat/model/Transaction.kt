@@ -10,6 +10,8 @@ import java.time.LocalDateTime
 data class Transaction(
     //room
     @PrimaryKey(autoGenerate = true)
+
+    //the id in postgreSQL is generated in the API code
     val id: Long,
 
     //retrofit

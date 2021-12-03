@@ -25,8 +25,8 @@ class MyViewModelFactory(
         return with(modelClass) {
             when {
 //                isAssignableFrom(AboutViewModel::class.java) -> AboutViewModel(repository)
-                isAssignableFrom(EditViewModel::class.java) -> EditViewModel(repository)
-                isAssignableFrom(AddViewModel::class.java) -> AddViewModel(repository)
+                isAssignableFrom(EditViewModel::class.java) -> EditViewModel(repository, app)
+                isAssignableFrom(AddViewModel::class.java) -> AddViewModel(repository, app)
                 isAssignableFrom(TransactionViewModel::class.java) -> TransactionViewModel(
                     repository,
                     app

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.AndersonHsieh.wmma_wheremymoneyat"
-        minSdk 23
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -68,7 +68,7 @@ dependencies {
 
     //Room
     //2.4.0-alpha03 is used to support mac m1 chip, I'm using a mac
-    def room_version = "2.4.0-alpha03"
+    def room_version = "2.4.0-rc01"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

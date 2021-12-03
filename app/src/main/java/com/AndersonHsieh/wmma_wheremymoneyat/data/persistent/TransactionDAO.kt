@@ -19,14 +19,19 @@ interface TransactionDAO {
     fun addTransaction(transaction: Transaction)
 
 
-    @Query(value = "SELECT * FROM transactions ORDER BY time;")
+    @Query(value = "SELECT * FROM transactions ORDER BY time")
     fun readAllTransactions():List<Transaction>
 
-    @Query(value = "SELECT * FROM transactions WHERE time = :year-:month ORDER BY time;")
-    fun readTransactionsByYearMonth(year:String, month:String):List<Transaction>
+//    This local SQLite db only stores the current collection of Transactions
+//    Thus no filtering by time needed when we want to access the cache
+//    @Query(value = "SELECT * FROM transactions WHERE time = :year-:month ORDER BY time")
+//    fun readTransactionsByYearMonth(year:String, month:String):List<Transaction>
 
-    @Delete
-    fun deleteTransaction(transaction: Transaction)
+    @Query(value = "UPDATE transactions SET name = :name, amount = :amount WHERE id = :id")
+    fun updateTransaction(id:Long, name:String, amount:Double)
+
+    @Query(value = "DELETE FROM transactions WHERE id = :id")
+    fun deleteTransaction(id:Long)
 
     @Query(value = "DELETE FROM transactions;")
     fun clearDB()

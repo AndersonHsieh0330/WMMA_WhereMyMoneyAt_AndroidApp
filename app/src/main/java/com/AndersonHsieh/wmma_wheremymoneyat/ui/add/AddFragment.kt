@@ -41,7 +41,7 @@ class AddFragment : Fragment() {
 
         viewModel = ViewModelProvider(
             this,
-            MyViewModelFactory(TransactionRepository.getInstance())
+            MyViewModelFactory(TransactionRepository.getInstance(), requireActivity().application)
         )[AddViewModel::class.java]
         _binding = FragmentAddBinding.inflate(inflater, container, false)
 

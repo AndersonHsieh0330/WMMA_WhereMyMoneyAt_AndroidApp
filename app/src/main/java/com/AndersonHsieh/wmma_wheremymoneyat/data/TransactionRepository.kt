@@ -51,35 +51,43 @@ class TransactionRepository private constructor() {
         )
     }
 
-    fun deleteTransaction(id: Long): Call<ResponseBody> {
+    fun deleteTransaction(context: Context, id: Long): Call<ResponseBody> {
         Log.d(Constants.LOGGING_TAG, "API DELETE request sent ")
+        //Note that SQLite is only storing the current COLLECTION of transactions
+        TransactionDataBase.getInstance(context).transactionDAO().deleteTransaction(id)
         return RetrofitInstance.apiAcessPoint.deleteTransaction(id)
     }
 
-    fun putTransaction(name: String, amount: Double): Call<ResponseBody> {
+    fun putTransaction(context: Context, name: String, amount: Double): Call<ResponseBody> {
         Log.d(Constants.LOGGING_TAG, "API PUT request sent ")
+
+        //This caching logic is very inefficient and will be updated later
+        //However this is done because the id column of remote DB(PostgreSQL)
+        //and local db(SQLite) must be aligned to be equal
+        //The id value in PostgreSQL db is generated in the spring RestAPI code
+        //thus to retrieve the correct id, just reload the entire collection
+
+        TransactionDataBase.getInstance(context).transactionDAO().clearDB()
+        getCachedTransaction(context)
+
         return RetrofitInstance.apiAcessPoint.putTransactions(name, amount)
     }
 
-    fun postTransaction(id: Long, name: String, amount: Double): Call<ResponseBody> {
-
+    fun postTransaction(context: Context, id: Long, name: String, amount: Double): Call<ResponseBody> {
+        //Note that SQLite is only storing the current COLLECTION of transactions
+        TransactionDataBase.getInstance(context).transactionDAO().updateTransaction(id, name, amount)
         return RetrofitInstance.apiAcessPoint.postTransactions(id, name, amount)
     }
 
     fun getCachedTransaction(context: Context):List<Transaction>{
         val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
 
-        return if (sp.getBoolean(Constants.SP_SELECT_ALL, false)) {
-            TransactionDataBase.getInstance(context).transactionDAO().readAllTransactions()
-        } else {
-            TransactionDataBase.getInstance(context).transactionDAO()
-                .readTransactionsByYearMonth(sp.getInt(Constants.SP_YEAR, 2021).toString(),
-                    sp.getInt(Constants.SP_MONTH, 1).toString())
-        }
+        return TransactionDataBase.getInstance(context).transactionDAO().readAllTransactions()
     }
 
     fun cacheTransactions(context: Context, mutableList: List<Transaction>){
         val sqliteDB = TransactionDataBase.getInstance(context).transactionDAO()
+        sqliteDB.clearDB()
         mutableList.forEach{sqliteDB.addTransaction(it)}
     }
 
@@ -158,7 +166,6 @@ class TransactionRepository private constructor() {
         Log.d(Constants.LOGGING_TAG, "$year-$month-31")
         return arrayOf("$year-$month-01", "$year-$month-31")
     }
-
     fun isConnectedToInternet(context: Context): Boolean {
         //define this method in repository for reusability
         val connectivityManager =
@@ -171,5 +178,5 @@ class TransactionRepository private constructor() {
         return false
     }
 
-
 }
+

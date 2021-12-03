@@ -1,7 +1,5 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -42,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        this.window.statusBarColor = ContextCompat.getColor(this,R.color.lightPinkishPurple);
 
         initUI()
 
