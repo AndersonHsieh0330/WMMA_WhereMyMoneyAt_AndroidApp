@@ -47,6 +47,7 @@
             android:layout_marginHorizontal="70dp"
             android:backgroundTint="#00FFFFFF"
             android:text="2021-08"
+            android:textAllCaps="false"
             android:textColor="?attr/secondaryElementColor"
             style="?android:attr/borderlessButtonStyle"
             android:textSize="20sp"

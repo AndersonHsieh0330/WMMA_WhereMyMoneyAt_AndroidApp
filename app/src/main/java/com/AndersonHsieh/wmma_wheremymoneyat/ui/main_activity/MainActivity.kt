@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navView:BottomNavigationView
     private lateinit var monthYearPickerBTN:Button
+    private lateinit var infoBTN: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +49,12 @@ class MainActivity : AppCompatActivity() {
         initUI()
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        Log.d(Constants.LOGGING_TAG, "onCreate: ${navController.currentBackStackEntry}")
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_about, R.id.navigation_home, R.id.navigation_add
             )
         )
         navView.setupWithNavController(navController)
@@ -90,11 +94,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initUI(){
+        infoBTN = binding.MainActivityInfoBTN
         navView = binding.navView
         monthYearPickerBTN = binding.MainActivityYearMonthPickerBTN
         monthYearPickerBTN.setOnClickListener(View.OnClickListener {
             if(viewModel.isConnectedToInternet()){
-                //TODO(waiting to debug)
                 val dialog = YearMonthPickerDialog()
             dialog.show(supportFragmentManager, Constants.YEAR_MONTH_PICKER_LAUNCH_TAG)
             }else{
@@ -102,13 +106,16 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, R.string.offline, Toast.LENGTH_SHORT).show()
             }
         })
+
+        infoBTN.setOnClickListener{
+        }
+
     }
 
     override fun onRestart() {
         super.onRestart()
         //once editActivity is closed, update the data by making a GET request
         viewModel.getTransactions()
-        Log.d(Constants.LOGGING_TAG, "activity onrestart ")
     }
 
 

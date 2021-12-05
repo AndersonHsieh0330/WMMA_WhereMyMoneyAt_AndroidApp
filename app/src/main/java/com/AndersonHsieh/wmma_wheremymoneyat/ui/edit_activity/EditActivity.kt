@@ -1,7 +1,6 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.edit_activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -90,10 +89,6 @@ class EditActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, R.string.invalidInput, Toast.LENGTH_SHORT).show()
             }
         } catch (exception: NumberFormatException) {
-            Log.d(
-                Constants.LOGGING_TAG,
-                "putTransaction: ${resources.getString(R.string.invalidInput)}"
-            )
             Toast.makeText(applicationContext, R.string.invalidInput, Toast.LENGTH_SHORT).show()
         }
 

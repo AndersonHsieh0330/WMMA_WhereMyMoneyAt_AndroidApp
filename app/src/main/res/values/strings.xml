@@ -17,6 +17,25 @@
     <string name="failed">Failed to add make a request, please check your Internet connection</string>
     <string name="offline">offline, please try again after connecting to Internet</string>
 
+<!--    about page related-->
+    <string name="aboutPage">About</string>
+    <string name="aboutPageDescription"><br>WhereMyMoneyApp is a full stack, non-profitable CRUD application, where I build my own API connected to a remote PostgreSQL database, then showing the data with this Android App. Check out my github repos for more. \nAlso made as a practice App along my journey of becoming a Android Developer.\n\nHope you enjoy it.\nFeel free to contact me with any questions or advices!</br></string>
+    <string name="madeWithLove">Made by Anderson Hsieh with ♡</string>
+    <string name="InstagramLink">https://www.instagram.com/anderson_hsieh0330/</string>
+    <string name="LinkedInLink">https://www.linkedin.com/in/anderson-hsieh-6003a41ba/</string>
+    <string name="GitHubLink">https://github.com/AndersonHsieh0330/Wat2Eat</string>
+    <string name="version">WhereMyMoneyAt v1.0</string>
+    <string name="copyright">Copyright © 2021 Hsieh Heng-An. All rights reserved.</string>
+    <string name="termsNConditions"><u>Terms &amp; Conditions</u></string>
+    <string name="privacyPolicy"><u>Privacy Policy</u></string>
+    <string name="noticeTitle">Notice</string>
+    <string name="SwipeRevealLayout">SwipeRevealLayout</string>
+    <string name="Retrofit">Retrofit</string>
+    <string name="SwipeRevealLayout_Link">https://github.com/chthai64/SwipeRevealLayout/blob/master/LICENSE.txt</string>
+    <string name="Retrofit_Link">https://square.github.io/retrofit/</string>
+    <string name="resourcesUsed">Resources used:</string>
+
+
 
 
 

@@ -34,7 +34,10 @@ class TransactionRepository private constructor() {
     }
 
     fun getTransaction(context: Context): Call<List<Transaction>> {
-        val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
+        val sp = context.getSharedPreferences(
+            Constants.SHAREDPREFERENCES_Transaction_TAG,
+            Context.MODE_PRIVATE
+        )
         Log.d(Constants.LOGGING_TAG, "API GET request sent ")
 
         //retrieve selected year month directly from sharedpreference
@@ -43,7 +46,7 @@ class TransactionRepository private constructor() {
             month = sp.getInt(Constants.SP_MONTH, 1)
         )
 
-         return RetrofitInstance.apiAcessPoint.getTransactions(
+        return RetrofitInstance.apiAcessPoint.getTransactions(
             sp.getBoolean(
                 Constants.SP_SELECT_ALL,
                 true
@@ -52,9 +55,11 @@ class TransactionRepository private constructor() {
     }
 
     fun deleteTransaction(context: Context, id: Long): Call<ResponseBody> {
-        Log.d(Constants.LOGGING_TAG, "API DELETE request sent ")
         //Note that SQLite is only storing the current COLLECTION of transactions
+        Log.d(Constants.LOGGING_TAG, "deleteTransaction from local db")
         TransactionDataBase.getInstance(context).transactionDAO().deleteTransaction(id)
+
+        Log.d(Constants.LOGGING_TAG, "API DELETE request sent ")
         return RetrofitInstance.apiAcessPoint.deleteTransaction(id)
     }
 
@@ -67,28 +72,45 @@ class TransactionRepository private constructor() {
         //The id value in PostgreSQL db is generated in the spring RestAPI code
         //thus to retrieve the correct id, just reload the entire collection
 
+        Log.d(Constants.LOGGING_TAG, "clean local db")
         TransactionDataBase.getInstance(context).transactionDAO().clearDB()
         getCachedTransaction(context)
 
         return RetrofitInstance.apiAcessPoint.putTransactions(name, amount)
     }
 
-    fun postTransaction(context: Context, id: Long, name: String, amount: Double): Call<ResponseBody> {
+    fun postTransaction(
+        context: Context,
+        id: Long,
+        name: String,
+        amount: Double
+    ): Call<ResponseBody> {
+        Log.d(Constants.LOGGING_TAG, "API GET request sent ")
+        Log.d(Constants.LOGGING_TAG, "UpdateTransaction in local db")
+
         //Note that SQLite is only storing the current COLLECTION of transactions
-        TransactionDataBase.getInstance(context).transactionDAO().updateTransaction(id, name, amount)
+        TransactionDataBase.getInstance(context).transactionDAO()
+            .updateTransaction(id, name, amount)
         return RetrofitInstance.apiAcessPoint.postTransactions(id, name, amount)
     }
 
-    fun getCachedTransaction(context: Context):List<Transaction>{
-        val sp = context.getSharedPreferences(Constants.SHAREDPREFERENCES_Transaction_TAG, Context.MODE_PRIVATE)
+    fun getCachedTransaction(context: Context): List<Transaction> {
+        val sp = context.getSharedPreferences(
+            Constants.SHAREDPREFERENCES_Transaction_TAG,
+            Context.MODE_PRIVATE
+        )
+        Log.d(Constants.LOGGING_TAG, "readAllTransaction in local db")
 
         return TransactionDataBase.getInstance(context).transactionDAO().readAllTransactions()
     }
 
-    fun cacheTransactions(context: Context, mutableList: List<Transaction>){
+    fun cacheTransactions(context: Context, mutableList: List<Transaction>) {
         val sqliteDB = TransactionDataBase.getInstance(context).transactionDAO()
         sqliteDB.clearDB()
-        mutableList.forEach{sqliteDB.addTransaction(it)}
+        Log.d(Constants.LOGGING_TAG, "clean local db")
+        mutableList.forEach { sqliteDB.addTransaction(it) }
+        Log.d(Constants.LOGGING_TAG, "addTransactions to local db")
+
     }
 
 
@@ -166,6 +188,7 @@ class TransactionRepository private constructor() {
         Log.d(Constants.LOGGING_TAG, "$year-$month-31")
         return arrayOf("$year-$month-01", "$year-$month-31")
     }
+
     fun isConnectedToInternet(context: Context): Boolean {
         //define this method in repository for reusability
         val connectivityManager =

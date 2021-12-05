@@ -98,11 +98,6 @@ class RecyclerAdapter(
             }
             transactionRecyclerviewItemDelete.setOnClickListener {
                 if (viewModel.isConnectedToInternet()) {
-                    //TODO(waiting to debug)
-                    Log.d(
-                        Constants.LOGGING_TAG,
-                        "onResponse: clicked ${dataSet[holder.adapterPosition].id}"
-                    )
                     viewModel.deleteTransactions(dataSet[holder.adapterPosition].id)
                         .enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(
@@ -113,12 +108,10 @@ class RecyclerAdapter(
 
                                 dataSet.removeAt(holder.adapterPosition)
                                 notifyItemRemoved(holder.adapterPosition)
-                                Log.d(Constants.LOGGING_TAG, "onResponse: recycer ")
 
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Log.d(Constants.LOGGING_TAG, "Failure: recycer")
 
                             }
                         })

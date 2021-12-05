@@ -4,19 +4,172 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.about.AboutFragment">
+    tools:context=".ui.main_activity.MainActivity">
 
-    <TextView
-        android:id="@+id/text_home"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/AboutFragment_descriptionContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/AboutFragment_resourcesUsed">
+
+        <TextView
+            android:id="@+id/CreditPage_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/aboutPageDescription"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <ImageButton
+            android:id="@+id/AboutFragment_GithubLink"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/github_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/AboutFragment_LinkedInLink"
+            app:layout_constraintEnd_toStartOf="@+id/AboutFragment_InstagramLink" />
+
+        <ImageButton
+            android:id="@+id/AboutFragment_InstagramLink"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/instagram_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/AboutFragment_LinkedInLink"
+            app:layout_constraintEnd_toStartOf="@+id/AboutFragment_LinkedInLink" />
+
+        <ImageButton
+            android:id="@+id/AboutFragment_LinkedInLink"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/linkedin_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/CreditPage_description" />
+
+        <TextView
+            android:id="@+id/AboutFragment_madeWithLove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="right"
+            android:text="@string/madeWithLove"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AboutFragment_GithubLink" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/AboutFragment_resourcesUsed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/resourcesUsed"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/AboutFragment_attributesTable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/AboutFragment_attributesTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/AboutFragment_version"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/AboutFragment_SwipeViewLayoutInfoBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:text="@string/SwipeRevealLayout"/>
+
+        <TextView
+            android:id="@+id/AboutFragment_RetrofitInfoBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:text="@string/Retrofit"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/AboutFragment_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/AboutFragment_divider"
+        android:text="@string/version"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="20dp"/>
+
+    <TextView
+        android:id="@+id/AboutFragment_privacyPolicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/privacyPolicy"
+        app:layout_constraintStart_toEndOf="@id/AboutFragment_divider"
+        app:layout_constraintTop_toTopOf="@id/AboutFragment_divider"
+        app:layout_constraintBottom_toBottomOf="@id/AboutFragment_divider"
+        android:layout_marginEnd="10dp"
+        android:textSize="12sp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/AboutFragment_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="|"
+        android:textSize="12sp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/AboutFragment_copyright"/>
+
+    <TextView
+        android:id="@+id/AboutFragment_TermsNConditions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/termsNConditions"
+        app:layout_constraintEnd_toStartOf="@id/AboutFragment_divider"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="@id/AboutFragment_divider"
+        app:layout_constraintBottom_toBottomOf="@id/AboutFragment_divider"
+        android:layout_marginEnd="10dp"/>
+
+    <TextView
+        android:id="@+id/AboutFragment_copyright"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/copyright"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
