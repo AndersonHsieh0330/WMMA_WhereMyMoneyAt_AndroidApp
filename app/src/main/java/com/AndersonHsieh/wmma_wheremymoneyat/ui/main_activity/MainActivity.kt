@@ -18,6 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityMainBinding
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.about.AboutFragment
+import com.AndersonHsieh.wmma_wheremymoneyat.ui.add.AddFragment
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.month_picker.YearMonthPickerDialog
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory
@@ -35,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         )[TransactionViewModel::class.java]
     }
 
-    private lateinit var navView:BottomNavigationView
-    private lateinit var monthYearPickerBTN:Button
+    private lateinit var navView: BottomNavigationView
+    private lateinit var monthYearPickerBTN: Button
     private lateinit var infoBTN: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        this.window.statusBarColor = ContextCompat.getColor(this,R.color.lightPinkishPurple);
+        this.window.statusBarColor = ContextCompat.getColor(this, R.color.lightPinkishPurple);
 
         initUI()
 
@@ -52,11 +54,6 @@ class MainActivity : AppCompatActivity() {
         Log.d(Constants.LOGGING_TAG, "onCreate: ${navController.currentBackStackEntry}")
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_about, R.id.navigation_home, R.id.navigation_add
-            )
-        )
         navView.setupWithNavController(navController)
 
 
@@ -90,24 +87,38 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-
     }
 
-    fun initUI(){
+    fun initUI() {
         infoBTN = binding.MainActivityInfoBTN
         navView = binding.navView
         monthYearPickerBTN = binding.MainActivityYearMonthPickerBTN
-        monthYearPickerBTN.setOnClickListener(View.OnClickListener {
-            if(viewModel.isConnectedToInternet()){
+        monthYearPickerBTN.setOnClickListener {
+            if (viewModel.isConnectedToInternet()) {
                 val dialog = YearMonthPickerDialog()
-            dialog.show(supportFragmentManager, Constants.YEAR_MONTH_PICKER_LAUNCH_TAG)
-            }else{
+                dialog.show(supportFragmentManager, Constants.YEAR_MONTH_PICKER_LAUNCH_TAG)
+            } else {
                 //user is only allowed to view the collection of transactions cached in SQLite when offline
                 Toast.makeText(applicationContext, R.string.offline, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
-        infoBTN.setOnClickListener{
+        infoBTN.setOnClickListener {
+            val currentFragTag =
+                this.supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)?.childFragmentManager?.fragments?.get(0)?.toString()
+            if (currentFragTag?.contains("AboutFragment") == true) {
+                Log.d(Constants.LOGGING_TAG, "about")
+            } else if (currentFragTag?.contains("HomeFragment") == true) {
+                Log.d(Constants.LOGGING_TAG, "home")
+
+            } else if (currentFragTag?.contains("AddFragment") == true) {
+                Log.d(Constants.LOGGING_TAG, "Add")
+            } else {
+                Log.d(Constants.LOGGING_TAG, "else")
+            }
+
+            Log.d(Constants.LOGGING_TAG, "$currentFragTag")
+
         }
 
     }
@@ -117,9 +128,6 @@ class MainActivity : AppCompatActivity() {
         //once editActivity is closed, update the data by making a GET request
         viewModel.getTransactions()
     }
-
-
-
 
 
 }
