@@ -14,7 +14,7 @@ object RetrofitInstance {
             .build()
     }
 
-    val apiAcessPoint: TransactionAPI by lazy {
+    val apiAccessPoint: TransactionAPI by lazy {
         retrofit.create(TransactionAPI::class.java);
     }
 }

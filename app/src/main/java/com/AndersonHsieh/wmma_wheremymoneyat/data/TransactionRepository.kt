@@ -45,7 +45,7 @@ class TransactionRepository private constructor() {
             month = sp.getInt(Constants.SP_MONTH, 1)
         )
 
-        return RetrofitInstance.apiAcessPoint.getTransactions(
+        return RetrofitInstance.apiAccessPoint.getTransactions(
             sp.getBoolean(
                 Constants.SP_SELECT_ALL,
                 true
@@ -59,7 +59,7 @@ class TransactionRepository private constructor() {
         TransactionDataBase.getInstance(context).transactionDAO().deleteTransaction(id)
 
         Log.d(Constants.LOGGING_TAG, "API DELETE request sent ")
-        return RetrofitInstance.apiAcessPoint.deleteTransaction(id)
+        return RetrofitInstance.apiAccessPoint.deleteTransaction(id)
     }
 
     fun putTransaction(context: Context, name: String, amount: Double): Call<ResponseBody> {
@@ -75,7 +75,7 @@ class TransactionRepository private constructor() {
         TransactionDataBase.getInstance(context).transactionDAO().clearDB()
         getCachedTransaction(context)
 
-        return RetrofitInstance.apiAcessPoint.putTransactions(name, amount)
+        return RetrofitInstance.apiAccessPoint.putTransactions(name, amount)
     }
 
     fun postTransaction(
@@ -90,7 +90,7 @@ class TransactionRepository private constructor() {
         //Note that SQLite is only storing the current COLLECTION of transactions
         TransactionDataBase.getInstance(context).transactionDAO()
             .updateTransaction(id, name, amount)
-        return RetrofitInstance.apiAcessPoint.postTransactions(id, name, amount)
+        return RetrofitInstance.apiAccessPoint.postTransactions(id, name, amount)
     }
 
     fun getCachedTransaction(context: Context): List<Transaction> {
