@@ -1,12 +1,8 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.data.network_requests
 
-import androidx.lifecycle.LiveData
-import androidx.room.Delete
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.http.*
 
 interface TransactionAPI {

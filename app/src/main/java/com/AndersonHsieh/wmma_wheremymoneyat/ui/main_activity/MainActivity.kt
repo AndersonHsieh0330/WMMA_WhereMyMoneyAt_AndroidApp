@@ -1,27 +1,21 @@
 package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.R.*
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityMainBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.ui.about.AboutFragment
-import com.AndersonHsieh.wmma_wheremymoneyat.ui.add.AddFragment
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.month_picker.YearMonthPickerDialog
 import com.AndersonHsieh.wmma_wheremymoneyat.util.Constants
 import com.AndersonHsieh.wmma_wheremymoneyat.util.MyViewModelFactory

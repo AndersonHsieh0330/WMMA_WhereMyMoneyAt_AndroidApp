@@ -2,9 +2,7 @@ package com.AndersonHsieh.wmma_wheremymoneyat.ui.main_activity
 
 import android.app.Application
 import android.content.Context
-import android.net.ConnectivityManager
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction
@@ -12,7 +10,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDateTime
 
 class TransactionViewModel(private val repository: TransactionRepository, application: Application) : AndroidViewModel(
     application

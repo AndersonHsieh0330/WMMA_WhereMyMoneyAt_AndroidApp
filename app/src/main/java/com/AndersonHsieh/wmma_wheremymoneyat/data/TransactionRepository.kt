@@ -3,7 +3,6 @@ package com.AndersonHsieh.wmma_wheremymoneyat.data
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.AndersonHsieh.wmma_wheremymoneyat.data.network_requests.RetrofitInstance
 import com.AndersonHsieh.wmma_wheremymoneyat.data.persistent.TransactionDataBase
 import com.AndersonHsieh.wmma_wheremymoneyat.model.Transaction

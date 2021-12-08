@@ -3,22 +3,14 @@ package com.AndersonHsieh.wmma_wheremymoneyat.ui.about
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ScrollView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.AndersonHsieh.wmma_wheremymoneyat.R
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentAboutBinding
-import com.AndersonHsieh.wmma_wheremymoneyat.databinding.FragmentHomeBinding
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 
 class AboutFragment : Fragment() {
 
