@@ -74,8 +74,6 @@ class EditActivity : AppCompatActivity() {
                         call: Call<ResponseBody>,
                         response: Response<ResponseBody>
                     ) {
-                        nameInput.text.clear()
-                        amountInput.text.clear()
                         Toast.makeText(applicationContext, R.string.success, Toast.LENGTH_SHORT).show()
                     }
 

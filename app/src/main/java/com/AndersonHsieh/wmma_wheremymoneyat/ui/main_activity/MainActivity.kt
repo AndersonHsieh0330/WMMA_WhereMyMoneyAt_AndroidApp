@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -16,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.AndersonHsieh.wmma_wheremymoneyat.R
+import com.AndersonHsieh.wmma_wheremymoneyat.R.*
 import com.AndersonHsieh.wmma_wheremymoneyat.data.TransactionRepository
 import com.AndersonHsieh.wmma_wheremymoneyat.databinding.ActivityMainBinding
 import com.AndersonHsieh.wmma_wheremymoneyat.ui.about.AboutFragment
@@ -29,33 +31,36 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val viewModel: TransactionViewModel by lazy {
-        //only initialized on first time use of the variable "viewModel"
-        ViewModelProvider(
-            this,
-            MyViewModelFactory(TransactionRepository.getInstance(), application)
-        )[TransactionViewModel::class.java]
-    }
+    private lateinit var viewModel: TransactionViewModel
 
+    //views
     private lateinit var navView: BottomNavigationView
     private lateinit var monthYearPickerBTN: Button
     private lateinit var infoBTN: ImageButton
+    private lateinit var favoriteBTN: ImageButton
+
+    private var isFavorited:Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //because TransactionViewModel is shared between activity and homefragment
+        //viewModel must be initialized before inflating fragment
+        //else the line "by activityViewModels()" in homefragment will cause app to crash
+        viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory(TransactionRepository.getInstance(), application)
+        )[TransactionViewModel::class.java]
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        this.window.statusBarColor = ContextCompat.getColor(this, R.color.lightPinkishPurple);
+        this.window.statusBarColor = ContextCompat.getColor(this, color.lightPinkishPurple);
 
         initUI()
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navController = findNavController(id.nav_host_fragment_activity_main)
         Log.d(Constants.LOGGING_TAG, "onCreate: ${navController.currentBackStackEntry}")
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
-
 
         viewModel.getTransactions()
         viewModel.getSelectedYearMonth()
@@ -90,31 +95,59 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initUI() {
+        favoriteBTN = binding.MainActivityFavoriteBTN
         infoBTN = binding.MainActivityInfoBTN
         navView = binding.navView
         monthYearPickerBTN = binding.MainActivityYearMonthPickerBTN
+
+        favoriteBTN.setOnClickListener{
+            Log.d(Constants.LOGGING_TAG, "initUI: ")
+
+            if(isFavorited){
+            favoriteBTN.setImageResource(R.drawable.ic_baseline_favorite_24)
+                isFavorited = false
+            }else{
+                favoriteBTN.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                isFavorited = true
+            }
+        }
+
         monthYearPickerBTN.setOnClickListener {
             if (viewModel.isConnectedToInternet()) {
                 val dialog = YearMonthPickerDialog()
                 dialog.show(supportFragmentManager, Constants.YEAR_MONTH_PICKER_LAUNCH_TAG)
             } else {
                 //user is only allowed to view the collection of transactions cached in SQLite when offline
-                Toast.makeText(applicationContext, R.string.offline, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, string.offline, Toast.LENGTH_SHORT).show()
             }
         }
 
         infoBTN.setOnClickListener {
             val currentFragTag =
-                this.supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)?.childFragmentManager?.fragments?.get(0)?.toString()
+                this.supportFragmentManager.findFragmentById(id.nav_host_fragment_activity_main)?.childFragmentManager?.fragments?.get(
+                    0
+                )?.toString()
             if (currentFragTag?.contains("AboutFragment") == true) {
                 Log.d(Constants.LOGGING_TAG, "about")
+                AlertDialog.Builder(this)
+                    .setTitle(string.note)
+                    .setMessage(string.aboutFragmentInfo)
+                    .setPositiveButton(string.OK, null)
+                    .show()
             } else if (currentFragTag?.contains("HomeFragment") == true) {
-                Log.d(Constants.LOGGING_TAG, "home")
-
+                AlertDialog.Builder(this)
+                    .setTitle(string.note)
+                    .setMessage(string.homeFragmentInfo)
+                    .setPositiveButton(string.OK, null)
+                    .show()
             } else if (currentFragTag?.contains("AddFragment") == true) {
-                Log.d(Constants.LOGGING_TAG, "Add")
+                AlertDialog.Builder(this)
+                    .setTitle(string.note)
+                    .setMessage(string.addFragmentInfo)
+                    .setPositiveButton(string.OK, null)
+                    .show()
             } else {
-                Log.d(Constants.LOGGING_TAG, "else")
+                Toast.makeText(this, string.unexpected_error, Toast.LENGTH_SHORT).show()
             }
 
             Log.d(Constants.LOGGING_TAG, "$currentFragTag")

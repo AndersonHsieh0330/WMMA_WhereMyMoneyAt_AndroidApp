@@ -3,6 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_about">About</string>
     <string name="title_add">Add</string>
+    <string name="OK">OK</string>
+    <string name="unexpected_error">"Sorry, unexpected error occurred, please try again later"</string>
 
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
@@ -34,6 +36,16 @@
     <string name="SwipeRevealLayout_Link">https://github.com/chthai64/SwipeRevealLayout/blob/master/LICENSE.txt</string>
     <string name="Retrofit_Link">https://square.github.io/retrofit/</string>
     <string name="resourcesUsed">Resources used:</string>
+
+    <!-- info page texts-->
+    <string name="note">Note</string>
+    <string name="aboutFragmentInfo">Welcome! Please go to Home/Add tab to start!</string>
+    <string name="homeFragmentInfo"><br>Click the button on the top to change the selected period. Swipe left on the cells to edit or delete a transaction.\n\nEditing or deleting a transaction is not allowed offline.</br></string>
+    <string name="addFragmentInfo">Recording expenses right after you make a transaction is a good habit, thus the time column is automatically set to the current time.</string>
+
+
+
+
 
 
 

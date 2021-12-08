@@ -27,10 +27,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/MainActivity_hamburgerMenuBTN"
+            android:id="@+id/MainActivity_FavoriteBTN"
             android:layout_width="wrap_content"
             android:layout_height="?android:actionBarSize"
-            android:src="@drawable/ic_action_menu"
+            android:src="@drawable/ic_baseline_favorite_24"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
             android:id="@+id/MainActivity_YearMonthPickerBTN"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@id/MainActivity_hamburgerMenuBTN"
+            app:layout_constraintStart_toEndOf="@id/MainActivity_FavoriteBTN"
             app:layout_constraintEnd_toStartOf="@id/MainActivity_infoBTN"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

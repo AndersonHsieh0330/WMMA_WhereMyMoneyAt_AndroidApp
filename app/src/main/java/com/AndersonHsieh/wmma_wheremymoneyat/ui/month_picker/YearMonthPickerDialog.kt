@@ -75,13 +75,13 @@ class YearMonthPickerDialog : DialogFragment() {
             minValue = 1
         }
 
-        closeBTN.setOnClickListener(View.OnClickListener {
+        closeBTN.setOnClickListener {
             viewModel.changeSelectedTimeInSharedPreference(yearPicker.value, monthPicker.value, selectAllCheckbox.isChecked)
             viewModel.getSelectedYearMonth()
             viewModel.getIsSelectedAll()
             viewModel.getTransactions()
             removeFragment()
-        })
+        }
     }
 
     private fun removeFragment() {
